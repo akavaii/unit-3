@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <main class="contact-page">
+        <header class="contact-header">
+            <h1>Contact Us</h1>
+            <p>If you have questions or need support, please use the form below — we'll get back to you as soon as possible.</p>
+        </header>
+
+        <section class="contact-card">
+            <form id="contactForm" class="contact-form" novalidate>
+                <div class="field">
+                    <label for="name">Full name</label>
+                    <input id="name" name="name" type="text" required minlength="2" placeholder="Jane Doe" />
+                </div>
+
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <input id="email" name="email" type="email" required placeholder="you@example.com" />
+                </div>
+
+                <div class="field">
+                    <label for="phone">Phone (optional)</label>
+                    <input id="phone" name="phone" type="tel" pattern="^\+?[0-9\s\-\(\)]{7,20}$" placeholder="+1 555 555 5555" />
+                </div>
+
+                <div class="field">
+                    <label for="subject">Subject</label>
+                    <input id="subject" name="subject" type="text" placeholder="Subject" />
+                </div>
+
+                <div class="field">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required rows="6" minlength="10" placeholder="Write your message here..."></textarea>
+                </div>
+
+                <div class="field checkbox-field">
+                    <input id="consent" name="consent" type="checkbox" required />
+                    <label for="consent">I agree to be contacted about my request.</label>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn primary">Send message</button>
+                    <button type="reset" class="btn secondary">Reset</button>
+                </div>
+
+                <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        // Basic client-side handling: replace with real endpoint for production.
+        (function () {
+            const form = document.getElementById('contactForm');
+            const status = document.getElementById('formStatus');
+
+            function showStatus(msg, ok = true) {
+                status.textContent = msg;
+                status.className = 'form-status ' + (ok ? 'ok' : 'error');
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                status.textContent = '';
+
+                if (!form.checkValidity()) {
+                    // Let browser show built-in validation UI, but also give a message
+                    showStatus('Please complete the required fields.', false);
+                    form.reportValidity();
+                    return;
+                }
+
+                // Collect form data
+                const data = new FormData(form);
+                const payload = {};
+                data.forEach((v, k) => payload[k] = v);
+
+                // Demo: show success message and reset. Replace with fetch() to send to a server.
+                console.log('Contact form submission:', payload);
+                showStatus('Thank you — your message has been recorded.', true);
+                form.reset();
+
+                // Optionally clear the message after a few seconds:
+                setTimeout(() => { status.textContent = ''; status.className = 'form-status'; }, 6000);
+            });
+        })();
+    </script>
+</body>
+</html>
